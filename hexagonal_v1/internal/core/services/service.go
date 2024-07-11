@@ -28,16 +28,16 @@ func (srv *service) Get(id string) (domain.Game, error) {
 	return game, nil
 }
 
-func (srv *service) Create(name string, size uint, bombs uint) (domain.Game, error) {
-	if bombs >= size*size {
-		return domain.Game{}, errors.New("the number of bombs is invalid")
-	}
+// func (srv *service) Create(name string, size uint, bombs uint) (domain.Game, error) {
+// 	if bombs >= size*size {
+// 		return domain.Game{}, errors.New("the number of bombs is invalid")
+// 	}
 
-	game := domain.NewGame(srv.uidGen.New(), name, size, bombs)
+// 	game := domain.NewGame(srv.uidGen.New(), name, size, bombs)
 
-	if err := srv.gameRepository.Save(game); err != nil {
-		return domain.Game{}, errors.New("create game into repository has failed")
-	}
+// 	if err := srv.gameRepository.Save(game); err != nil {
+// 		return domain.Game{}, errors.New("create game into repository has failed")
+// 	}
 
-	return game, nil
-}
+// 	return game, nil
+// }

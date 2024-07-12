@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  database:
+    image: postgres:14.1-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+  backend:
+    build: ./cmd/http
+    volumes:
+      - ./cmd/http:/app
+    working_dir: /app
+    command: sh runserver.sh
+    ports:
+      - 8080:8080
+
+volumes: 
+  db:

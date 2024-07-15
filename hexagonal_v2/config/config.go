@@ -1,8 +1,6 @@
 package config
 
 import (
-	"strings"
-
 	"github.com/spf13/viper"
 )
 
@@ -15,27 +13,30 @@ type Config struct {
 	AppPort    string
 }
 
-var AppConfig Config
-
-func LoadConfig() error {
-	viper.SetConfigName("env")
-	viper.SetConfigType("yaml")
-	viper.AddConfigPath(".")
+func NewConfig() *Config {
+	viper.SetConfigFile(".env")
+	viper.AddConfigPath("../")
 	viper.AutomaticEnv()
-	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	viper.ReadInConfig()
 
-	if err := viper.ReadInConfig(); err != nil {
-		return err
+	return &Config{
+		DBHost:     viper.GetString("DB_HOST"),
+		DBPort:     viper.GetString("DB_PORT"),
+		DBUser:     viper.GetString("DB_USER"),
+		DBPassword: viper.GetString("DB_PASSWORD"),
+		DBName:     viper.GetString("DB_NAME"),
+		AppPort:    viper.GetString("APP_PORT"),
 	}
 
-	AppConfig = Config{
-		DBHost:     viper.GetString("database.host"),
-		DBPort:     viper.GetString("database.port"),
-		DBUser:     viper.GetString("database.user"),
-		DBPassword: viper.GetString("database.password"),
-		DBName:     viper.GetString("database.name"),
-		AppPort:    viper.GetString("app.port"),
-	}
+}
 
-	return nil
+func (c *Config) BuildPostgresDSN() string {
+	dsn := "host=" + c.DBHost +
+		" port=" + c.DBPort +
+		" user=" + c.DBUser +
+		" password=" + c.DBPassword +
+		" dbname=" + c.DBName +
+		" sslmode=disable TimeZone=Asia/Bangkok"
+
+	return dsn
 }

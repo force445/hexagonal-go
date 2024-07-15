@@ -3,32 +3,35 @@ package service
 import (
 	"hexagonal_v2/internal/core/domain"
 	"hexagonal_v2/internal/core/port"
+
+	"github.com/google/uuid"
 )
 
-type AirpodService struct {
-	airpod port.AirpodService
+type airpodService struct {
+	repo port.AirpodRepository
 }
 
-func NewAirpodService(airpod port.AirpodService) *AirpodService {
-	return &AirpodService{airpod: airpod}
+func NewAirpodService(repo port.AirpodRepository) port.AirpodService {
+	return &airpodService{repo: repo}
 }
 
-func (a *AirpodService) CreateAirpod(airpod *domain.Airpod) error {
-	return a.airpod.CreateAirpod(airpod)
+func (a *airpodService) CreateAirpod(airpod *domain.Airpod) error {
+	airpod.ID = uuid.New().String()
+	return a.repo.CreateAirpod(airpod)
 }
 
-func (a *AirpodService) GetAirpodByID(id int) (*domain.Airpod, error) {
-	return a.airpod.GetAirpodByID(id)
+func (a *airpodService) GetAirpodByID(id string) (*domain.Airpod, error) {
+	return a.repo.GetAirpodByID(id)
 }
 
-func (a *AirpodService) GetAirpods() ([]*domain.Airpod, error) {
-	return a.airpod.GetAirpods()
+func (a *airpodService) GetAirpods() ([]*domain.Airpod, error) {
+	return a.repo.GetAirpods()
 }
 
-func (a *AirpodService) UpdateAirpod(airpod *domain.Airpod) error {
-	return a.airpod.UpdateAirpod(airpod)
+func (a *airpodService) UpdateAirpod(airpod *domain.Airpod) error {
+	return a.repo.UpdateAirpod(airpod)
 }
 
-func (a *AirpodService) DeleteAirpod(id int) error {
-	return a.airpod.DeleteAirpod(id)
+func (a *airpodService) DeleteAirpod(id string) error {
+	return a.repo.DeleteAirpod(id)
 }

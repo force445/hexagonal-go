@@ -1,8 +1,10 @@
 package service
 
 import (
+	"errors"
 	"hexagonal_v2/internal/core/domain"
 	"hexagonal_v2/internal/core/port"
+	"log"
 
 	"github.com/google/uuid"
 )
@@ -26,6 +28,21 @@ func (a *airpodService) GetAirpodByID(id string) (*domain.Airpod, error) {
 
 func (a *airpodService) GetAirpods() ([]*domain.Airpod, error) {
 	return a.repo.GetAirpods()
+}
+
+func (a *airpodService) GetAirpodByUserID(id string) ([]*domain.Airpod, error) {
+	if id == "" {
+		return nil, errors.New("user id is required")
+	}
+
+	log.Printf("Fetching airpods for user id: %s", id)
+
+	airpods, err := a.repo.GetAirpodByUserID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return airpods, nil
 }
 
 func (a *airpodService) UpdateAirpod(airpod *domain.Airpod) error {

@@ -1,6 +1,8 @@
 package config
 
 import (
+	"log"
+
 	"github.com/spf13/viper"
 )
 
@@ -15,7 +17,7 @@ type Config struct {
 
 func NewConfig() *Config {
 	viper.SetConfigFile(".env")
-	viper.AddConfigPath("../")
+	viper.AddConfigPath("..")
 	viper.AutomaticEnv()
 	viper.ReadInConfig()
 
@@ -38,5 +40,10 @@ func (c *Config) BuildPostgresDSN() string {
 		" dbname=" + c.DBName +
 		" sslmode=disable TimeZone=Asia/Bangkok"
 
+	log.Println("DSN: ", dsn)
 	return dsn
+}
+
+func (c *Config) GetAppPort() string {
+	return c.AppPort
 }

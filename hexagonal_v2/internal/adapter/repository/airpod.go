@@ -37,6 +37,15 @@ func (a *airpodRepository) GetAirpods() ([]*domain.Airpod, error) {
 	return airpods, nil
 }
 
+func (a *airpodRepository) GetAirpodByUserID(id string) ([]*domain.Airpod, error) {
+	var airpods []*domain.Airpod
+	err := a.Db.Where("user_id = ?", id).Find(&airpods).Error
+	if err != nil {
+		return nil, err
+	}
+	return airpods, nil
+}
+
 func (a *airpodRepository) UpdateAirpod(airpod *domain.Airpod) error {
 	return a.Db.Save(airpod).Error
 }

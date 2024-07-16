@@ -6,6 +6,7 @@ type AirpodService interface {
 	CreateAirpod(airpod *domain.Airpod) error
 	GetAirpodByID(id string) (*domain.Airpod, error)
 	GetAirpods() ([]*domain.Airpod, error)
+	GetAirpodByUserID(id string) ([]*domain.Airpod, error)
 	UpdateAirpod(airpod *domain.Airpod) error
 	DeleteAirpod(id string) error
 }
@@ -30,6 +31,7 @@ type AirpodRepository interface {
 	CreateAirpod(airpod *domain.Airpod) error
 	GetAirpodByID(id string) (*domain.Airpod, error)
 	GetAirpods() ([]*domain.Airpod, error)
+	GetAirpodByUserID(id string) ([]*domain.Airpod, error)
 	UpdateAirpod(airpod *domain.Airpod) error
 	DeleteAirpod(id string) error
 }

@@ -27,3 +27,54 @@ func (a *airpodHandler) CreateAirpod(c *fiber.Ctx) error {
 
 	return c.JSON(airpod)
 }
+
+func (a *airpodHandler) GetAirpodByID(c *fiber.Ctx) error {
+	id := c.Params("id")
+	airpod, err := a.airpod.GetAirpodByID(id)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return c.JSON(airpod)
+}
+
+func (a *airpodHandler) GetAirpods(c *fiber.Ctx) error {
+	airpods, err := a.airpod.GetAirpods()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return c.JSON(airpods)
+}
+
+func (a *airpodHandler) GetAirpodByUserID(c *fiber.Ctx) error {
+	id := c.Params("id")
+	airpods, err := a.airpod.GetAirpodByUserID(id)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return c.JSON(airpods)
+}
+
+func (a *airpodHandler) UpdateAirpod(c *fiber.Ctx) error {
+	var airpod domain.Airpod
+	if err := c.BodyParser(&airpod); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	if err := a.airpod.UpdateAirpod(&airpod); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return c.JSON(airpod)
+}
+
+func (a *airpodHandler) DeleteAirpod(c *fiber.Ctx) error {
+	id := c.Params("id")
+	if err := a.airpod.DeleteAirpod(id); err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	return c.SendStatus(fiber.StatusNoContent)
+}

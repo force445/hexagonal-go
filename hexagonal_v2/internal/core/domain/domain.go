@@ -1,13 +1,13 @@
 package domain
 
 type User struct {
-	ID       int       `json:"id"`
+	ID       string    `json:"id"`
 	Username string    `json:"username"`
 	Airpod   []*Airpod `json:"airpod"`
 }
 
 type Airpod struct {
-	ID         int       `json:"id"`
+	ID         string    `json:"id"`
 	Name       string    `json:"name"`
 	Model      string    `json:"model"`
 	UserID     int       `json:"user_id"`

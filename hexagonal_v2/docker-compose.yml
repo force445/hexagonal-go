@@ -11,14 +11,14 @@ services:
     env_file:
       - .env
 
-  backend:
-    build: ./
-    volumes:
-      - ./cmd/http:/app
-    working_dir: /app
-    command: sh runserver.sh
-    ports:
-      - 8080:8080
+  # backend:
+  #   build: ./
+  #   volumes:
+  #     - ./cmd/http:/app
+  #   working_dir: /app
+  #   command: sh runserver.sh
+  #   ports:
+  #     - 8080:8080
 
 volumes: 
   db:

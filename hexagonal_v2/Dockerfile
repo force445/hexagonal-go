@@ -10,5 +10,4 @@ RUN go mod tidy
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main ./cmd/http
-
+RUN CGO_ENABLED=0 GOOS=linux go build -o main ./bin

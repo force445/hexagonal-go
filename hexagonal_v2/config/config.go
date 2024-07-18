@@ -17,11 +17,14 @@ type Config struct {
 
 func NewConfig() *Config {
 	viper.SetConfigFile(".env")
-	viper.AddConfigPath("..")
+	viper.AddConfigPath(".")      // Current directory
+	viper.AddConfigPath("..")     // Parent directory
+	viper.AddConfigPath("../../") // Grandparent directory
+	log.Println("Path: ", viper.ConfigFileUsed())
 	viper.AutomaticEnv()
 	viper.ReadInConfig()
 
-	return &Config{
+	config := &Config{
 		DBHost:     viper.GetString("DB_HOST"),
 		DBPort:     viper.GetString("DB_PORT"),
 		DBUser:     viper.GetString("DB_USER"),
@@ -29,6 +32,9 @@ func NewConfig() *Config {
 		DBName:     viper.GetString("DB_NAME"),
 		AppPort:    viper.GetString("APP_PORT"),
 	}
+
+	log.Printf("Loaded config: %v\n", config)
+	return config
 
 }
 

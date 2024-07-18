@@ -24,6 +24,12 @@ func main() {
 	airpodRepo := repository.NewAirpodRepository(postgresClient)
 	airpodService := service.NewAirpodService(airpodRepo)
 	airpodHandler := handler.NewAirpodHandler(airpodService)
+	locationRepo := repository.NewLocationRepository(postgresClient)
+	locationService := service.NewLocationService(locationRepo)
+	locationHandler := handler.NewLocationHandler(locationService)
+	userRepo := repository.NewUserRepository(postgresClient)
+	userService := service.NewUserService(userRepo)
+	userHandler := handler.NewUserHandler(userService)
 
 	app := fiber.New()
 
@@ -34,6 +40,17 @@ func main() {
 	airpodservices.Get("", airpodHandler.GetAirpods)
 	airpodservices.Get("/:id", airpodHandler.GetAirpodByID)
 	airpodservices.Get("/user/:id", airpodHandler.GetAirpodByUserID)
+	airpodservices.Put("/:id", airpodHandler.UpdateAirpod)
+
+	locationservices := v1.Group("/locations")
+	locationservices.Post("", locationHandler.CreateLocation)
+	locationservices.Get("", locationHandler.GetLocations)
+	locationservices.Get("/:id", locationHandler.GetLocationByID)
+	locationservices.Put("/:id", locationHandler.UpdateLocation)
+	locationservices.Delete("/:id", locationHandler.DeleteLocation)
+
+	userservices := v1.Group("/users")
+	userservices.Post("", userHandler.CreateUser)
 
 	log.Fatal(app.Listen(":" + port))
 

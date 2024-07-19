@@ -1,14 +1,21 @@
-FROM golang:1.20.3 AS builder
+FROM golang:1.20.3-alpine
 
-WORKDIR go/src/app
+# Set the working directory inside the container
+WORKDIR /app
 
+# Copy the Go module files
 COPY go.mod .
 COPY go.sum .
 
+# Download dependencies
 RUN go mod download
 RUN go mod tidy
 
+# Copy the rest of the application code
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main ./cmd/http
+# Make runserver.sh executable
+RUN chmod +x runserver.sh
 
+# Command to run the application
+CMD ["sh", "runserver.sh"]

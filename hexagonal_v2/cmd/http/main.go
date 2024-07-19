@@ -35,7 +35,7 @@ func main() {
 
 	v1 := app.Group("/api/v1")
 
-	airpodservices := v1.Group("/services")
+	airpodservices := v1.Group("/airpods")
 	airpodservices.Post("", airpodHandler.CreateAirpod)
 	airpodservices.Get("", airpodHandler.GetAirpods)
 	airpodservices.Get("/:id", airpodHandler.GetAirpodByID)
@@ -51,6 +51,10 @@ func main() {
 
 	userservices := v1.Group("/users")
 	userservices.Post("", userHandler.CreateUser)
+	userservices.Get("", userHandler.GetUsers)
+	userservices.Get("/:id", userHandler.GetUserByID)
+	userservices.Put("/:id", userHandler.UpdateUser)
+	userservices.Delete("/:id", userHandler.DeleteUser)
 
 	log.Fatal(app.Listen(":" + port))
 

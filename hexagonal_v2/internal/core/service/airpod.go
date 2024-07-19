@@ -5,8 +5,6 @@ import (
 	"hexagonal_v2/internal/core/domain"
 	"hexagonal_v2/internal/core/port"
 	"log"
-
-	"github.com/google/uuid"
 )
 
 type airpodService struct {
@@ -18,20 +16,30 @@ func NewAirpodService(repo port.AirpodRepository) port.AirpodService {
 }
 
 func (a *airpodService) CreateAirpod(airpod *domain.Airpod) error {
-	airpod.ID = uuid.New().String()
 	return a.repo.CreateAirpod(airpod)
 }
 
-func (a *airpodService) GetAirpodByID(id string) (*domain.Airpod, error) {
-	return a.repo.GetAirpodByID(id)
+func (a *airpodService) GetAirpodByID(id int64) (*domain.Airpod, error) {
+	if id == 0 {
+		return nil, errors.New("id is required")
+	}
+
+	log.Printf("Fetching airpod for id: %s", id)
+
+	airpod, err := a.repo.GetAirpodByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return airpod, nil
 }
 
 func (a *airpodService) GetAirpods() ([]*domain.Airpod, error) {
 	return a.repo.GetAirpods()
 }
 
-func (a *airpodService) GetAirpodByUserID(id string) ([]*domain.Airpod, error) {
-	if id == "" {
+func (a *airpodService) GetAirpodByUserID(id int64) ([]*domain.Airpod, error) {
+	if id == 0 {
 		return nil, errors.New("user id is required")
 	}
 
@@ -49,6 +57,6 @@ func (a *airpodService) UpdateAirpod(airpod *domain.Airpod) error {
 	return a.repo.UpdateAirpod(airpod)
 }
 
-func (a *airpodService) DeleteAirpod(id string) error {
+func (a *airpodService) DeleteAirpod(id int64) error {
 	return a.repo.DeleteAirpod(id)
 }

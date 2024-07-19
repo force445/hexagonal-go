@@ -12,6 +12,7 @@ type locationRepository struct {
 }
 
 func NewLocationRepository(Db *gorm.DB) port.LocationRepository {
+	Db.AutoMigrate(&domain.Location{})
 	return &locationRepository{Db: Db}
 }
 
@@ -19,7 +20,7 @@ func (l *locationRepository) CreateLocation(location *domain.Location) error {
 	return l.Db.Create(location).Error
 }
 
-func (l *locationRepository) GetLocationByID(id string) (*domain.Location, error) {
+func (l *locationRepository) GetLocationByID(id int64) (*domain.Location, error) {
 	var location domain.Location
 	err := l.Db.First(&location, id).Error
 	if err != nil {
@@ -41,6 +42,6 @@ func (l *locationRepository) UpdateLocation(location *domain.Location) error {
 	return l.Db.Save(location).Error
 }
 
-func (l *locationRepository) DeleteLocation(id string) error {
+func (l *locationRepository) DeleteLocation(id int64) error {
 	return l.Db.Delete(&domain.Location{}, id).Error
 }

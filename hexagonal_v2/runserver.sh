@@ -5,4 +5,5 @@ while ! nc -z database 5432; do
 done;
 
 # Run the Go application directly
-go run cmd/http/main.go
+cd cmd/http/
+dogo -c dogo.json

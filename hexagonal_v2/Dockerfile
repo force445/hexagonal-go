@@ -1,5 +1,7 @@
 FROM golang:1.20.3-alpine
 
+RUN go install github.com/liudng/dogo@latest
+
 # Set the working directory inside the container
 WORKDIR /app
 
@@ -13,6 +15,9 @@ RUN go mod tidy
 
 # Copy the rest of the application code
 COPY . .
+
+# Copy the dogo.yaml file
+COPY cmd/http/dogo.json cmd/http/dogo.json
 
 # Make runserver.sh executable
 RUN chmod +x runserver.sh

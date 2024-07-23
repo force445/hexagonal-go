@@ -21,15 +21,15 @@ func main() {
 		log.Fatal(err)
 	}
 
+	userRepo := repository.NewUserRepository(postgresClient)
+	userService := service.NewUserService(userRepo)
+	userHandler := handler.NewUserHandler(userService)
 	airpodRepo := repository.NewAirpodRepository(postgresClient)
-	airpodService := service.NewAirpodService(airpodRepo)
+	airpodService := service.NewAirpodService(airpodRepo, userRepo)
 	airpodHandler := handler.NewAirpodHandler(airpodService)
 	locationRepo := repository.NewLocationRepository(postgresClient)
 	locationService := service.NewLocationService(locationRepo)
 	locationHandler := handler.NewLocationHandler(locationService)
-	userRepo := repository.NewUserRepository(postgresClient)
-	userService := service.NewUserService(userRepo)
-	userHandler := handler.NewUserHandler(userService)
 
 	app := fiber.New()
 
@@ -58,4 +58,5 @@ func main() {
 
 	log.Fatal(app.Listen(":" + port))
 
+	log.Printf("Server started on port %s", port)
 }

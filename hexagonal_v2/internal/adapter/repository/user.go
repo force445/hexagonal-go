@@ -22,7 +22,7 @@ func (u *userRepository) CreateUser(user *domain.User) error {
 
 func (u *userRepository) GetUserByID(id int64) (*domain.User, error) {
 	var user domain.User
-	err := u.Db.First(&user, id).Error
+	err := u.Db.Preload("Airpods").First(&user, id).Error
 	if err != nil {
 		return nil, err
 	}

@@ -8,23 +8,29 @@ import (
 )
 
 type airpodService struct {
-	repo port.AirpodRepository
+	repo     port.AirpodRepository
+	userrepo port.UserRepository
 }
 
-func NewAirpodService(repo port.AirpodRepository) port.AirpodService {
-	return &airpodService{repo: repo}
+func NewAirpodService(repo port.AirpodRepository, userrepo port.UserRepository) port.AirpodService {
+	return &airpodService{repo: repo, userrepo: userrepo}
 }
 
 func (a *airpodService) CreateAirpod(airpod *domain.Airpod) error {
-	return a.repo.CreateAirpod(airpod)
+	a.repo.CreateAirpod(airpod)
+	user, err := a.userrepo.GetUserByID(airpod.UserID)
+	user.Airpods = append(user.Airpods, *airpod)
+	a.userrepo.UpdateUser(user)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (a *airpodService) GetAirpodByID(id int64) (*domain.Airpod, error) {
 	if id == 0 {
 		return nil, errors.New("id is required")
 	}
-
-	log.Printf("Fetching airpod for id: %s", id)
 
 	airpod, err := a.repo.GetAirpodByID(id)
 	if err != nil {

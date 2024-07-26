@@ -16,7 +16,7 @@ RUN go mod tidy
 # Copy the rest of the application code
 COPY . .
 
-# Copy the dogo.yaml file
+# Copy the dogo.json file
 COPY cmd/http/dogo.json cmd/http/dogo.json
 
 # Make runserver.sh executable

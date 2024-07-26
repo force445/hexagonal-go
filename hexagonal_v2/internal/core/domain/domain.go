@@ -12,7 +12,7 @@ type User struct {
 	UpdatedAt time.Time      `json:"updated_at"`
 	DeleteAt  gorm.DeletedAt `gorm:"index" json:"-"`
 	Username  string         `json:"username"`
-	Airpods   []Airpod       `gorm:"foreignKey:UserID" json:"airpods"`
+	Airpods   []*Airpod      `gorm:"foreignKey:UserID" json:"airpods"`
 }
 
 type Airpod struct {
@@ -27,7 +27,6 @@ type Airpod struct {
 }
 
 type Location struct {
-	gorm.Model
 	ID int64 `gorm:"primaryKey" json:"id"`
 	X  int   `json:"x"`
 	Y  int   `json:"y"`

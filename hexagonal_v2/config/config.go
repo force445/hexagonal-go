@@ -17,10 +17,9 @@ type Config struct {
 
 func NewConfig() *Config {
 	viper.SetConfigFile(".env")
-	viper.AddConfigPath(".")      // Current directory
-	viper.AddConfigPath("..")     // Parent directory
-	viper.AddConfigPath("../../") // Grandparent directory
-	log.Println("Path: ", viper.ConfigFileUsed())
+	viper.AddConfigPath(".")
+	viper.AddConfigPath("..")
+	viper.AddConfigPath("../../")
 	viper.AutomaticEnv()
 	viper.ReadInConfig()
 
@@ -46,7 +45,6 @@ func (c *Config) BuildPostgresDSN() string {
 		" dbname=" + c.DBName +
 		" sslmode=disable TimeZone=Asia/Bangkok"
 
-	log.Println("DSN: ", dsn)
 	return dsn
 }
 

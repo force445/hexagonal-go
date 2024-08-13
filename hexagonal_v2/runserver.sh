@@ -1,11 +1,6 @@
 #!/bin/sh
 #load config from .env
-export $(cat .env | xargs)
-
-echo "DB_HOST: ${DB_HOST}"
-echo "DB_PORT: ${DB_PORT}"
-
-while ! nc -z ${DB_HOST} ${DB_PORT}; do
+while ! nc -z ${POSTGRES_HOST} ${POSTGRES_PORT}; do
     echo "Waiting for the Postgres database to start...";
     sleep 1;
 done;

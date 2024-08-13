@@ -24,11 +24,11 @@ func NewConfig() *Config {
 	viper.ReadInConfig()
 
 	config := &Config{
-		DBHost:     viper.GetString("DB_HOST"),
-		DBPort:     viper.GetString("DB_PORT"),
-		DBUser:     viper.GetString("DB_USER"),
-		DBPassword: viper.GetString("DB_PASSWORD"),
-		DBName:     viper.GetString("DB_NAME"),
+		DBHost:     viper.GetString("POSTGRES_HOST"),
+		DBPort:     viper.GetString("POSTGRES_PORT"),
+		DBUser:     viper.GetString("POSTGRES_USER"),
+		DBPassword: viper.GetString("POSTGRES_PASSWORD"),
+		DBName:     viper.GetString("POSTGRES_DB"),
 		AppPort:    viper.GetString("APP_PORT"),
 	}
 

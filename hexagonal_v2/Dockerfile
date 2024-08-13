@@ -51,7 +51,8 @@ FROM ubuntu:20.04
 WORKDIR /app
 
 # Copy the built binary from the builder stage
-COPY --from=builder /app .
+COPY --from=builder /app/bin/main /app/bin/main 
+COPY --from=builder /app/runserver.sh /app
 
 RUN apt-get update && apt-get install -y libc6
 

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.app.name }}
+      app.kubernetes.io/component: {{ .Values.app.component }}
+      app.kuberenetes.io/managed-by: {{ .Values.app.manager }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Values.app.name }}
+        app.kubernetes.io/component: {{ .Values.app.component }}
+        app.kuberenetes.io/managed-by: {{ .Values.app.manager }}
+    spec:
+      containers:
+        - name: {{ .Values.deployment.name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.deployment.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.deployment.port }}
+          env:
+            - name: POSTGRES_HOST
+              value: postgresql
+            - name: POSTGRES_USER
+              value: {{ .Values.postgresql.auth.username | quote }} 
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.postgresql.auth.password | quote }}
+            - name: POSTGRES_DB
+              value: {{ .Values.postgresql.auth.database | quote }}
+            - name: POSTGRES_PORT
+              value: {{ .Values.postgresql.databaseport | quote }}
+            - name: APP_PORT
+              value: "8080"

@@ -1,0 +1,75 @@
+# Default values for deploy.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: force445/hexagonal-go
+  pullPolicy: Always
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 80
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+deployment:
+  name: app
+  port: 8080
+  pullPolicy: Always
+
+app:
+  name: hexagonal-go
+  component: backend
+  manager: helm
+
+postgresql:
+  fullnameOverride: postgresql
+  image:
+    tag: 11.14.0-debian-10-r17
+  auth:
+    password: postgrespassword
+    username: postgres
+    database: postgres
+    postgresPassword: postgrespassword
+    storageClassNames: local-path
+  databaseport: 5432
+  configmap:
+    name: postgresql-config
+
+  pvc:
+    name: data-postgresql-0
+
+  commonLabels:
+    name: postgres
+    component: database
+    manager: helm
+
+  pv:
+    name: data-postgresql-0
+    path: /mnt/data/postgresql-0
+    node: force-gl65-9sek
+
+
+ingress:
+  className: nginx
+  annotations: 
+    nginx.ingress.kubernetes.io/rewrite-target: / 
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: Prefix

@@ -21,21 +21,21 @@ func main() {
 		log.Fatal(err)
 	}
 
+	userRepo := repository.NewUserRepository(postgresClient)
+	userService := service.NewUserService(userRepo)
+	userHandler := handler.NewUserHandler(userService)
 	airpodRepo := repository.NewAirpodRepository(postgresClient)
-	airpodService := service.NewAirpodService(airpodRepo)
+	airpodService := service.NewAirpodService(airpodRepo, userRepo)
 	airpodHandler := handler.NewAirpodHandler(airpodService)
 	locationRepo := repository.NewLocationRepository(postgresClient)
 	locationService := service.NewLocationService(locationRepo)
 	locationHandler := handler.NewLocationHandler(locationService)
-	userRepo := repository.NewUserRepository(postgresClient)
-	userService := service.NewUserService(userRepo)
-	userHandler := handler.NewUserHandler(userService)
 
 	app := fiber.New()
 
 	v1 := app.Group("/api/v1")
 
-	airpodservices := v1.Group("/services")
+	airpodservices := v1.Group("/airpods")
 	airpodservices.Post("", airpodHandler.CreateAirpod)
 	airpodservices.Get("", airpodHandler.GetAirpods)
 	airpodservices.Get("/:id", airpodHandler.GetAirpodByID)
@@ -51,7 +51,12 @@ func main() {
 
 	userservices := v1.Group("/users")
 	userservices.Post("", userHandler.CreateUser)
+	userservices.Get("", userHandler.GetUsers)
+	userservices.Get("/:id", userHandler.GetUserByID)
+	userservices.Put("/:id", userHandler.UpdateUser)
+	userservices.Delete("/:id", userHandler.DeleteUser)
 
 	log.Fatal(app.Listen(":" + port))
 
+	log.Printf("Server started on port %s", port)
 }

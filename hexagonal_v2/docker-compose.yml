@@ -11,15 +11,26 @@ services:
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
 
+# FORDEVELOPMENTONLY
+  # backend:
+  #   build: .
+  #   volumes:
+  #     - .:/app
+  #   working_dir: /app
+  #   command: sh /app/runserver.sh
+  #   ports:
+  #     - "8080:8080"
+  #   env_file: .env
+
+# #FORDEPLOYMENTONLY
   backend:
-    build: .
-    volumes:
-      - .:/app
-    working_dir: /app
-    command: sh runserver.sh
-    ports:
-      - "8080:8080"
-    env_file: .env
+      image: force445/hexagonal-go
+      volumes:
+        - .:/app
+      working_dir: /app
+      ports:
+        - "8080:8080"
+      env_file: .env
 
 volumes:
   db:

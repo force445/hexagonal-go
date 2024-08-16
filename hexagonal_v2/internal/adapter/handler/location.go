@@ -3,6 +3,7 @@ package handler
 import (
 	"hexagonal_v2/internal/core/domain"
 	"hexagonal_v2/internal/core/port"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -30,7 +31,12 @@ func (l *locationHandler) CreateLocation(c *fiber.Ctx) error {
 }
 
 func (l *locationHandler) GetLocationByID(c *fiber.Ctx) error {
-	id := c.Params("id")
+	idStr := c.Params("id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid ID format"})
+	}
+
 	location, err := l.location.GetLocationByID(id)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
@@ -62,7 +68,12 @@ func (l *locationHandler) UpdateLocation(c *fiber.Ctx) error {
 }
 
 func (l *locationHandler) DeleteLocation(c *fiber.Ctx) error {
-	id := c.Params("id")
+	idStr := c.Params("id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "invalid ID format"})
+	}
+
 	if err := l.location.DeleteLocation(id); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}

@@ -17,7 +17,7 @@ func (l *locationService) CreateLocation(location *domain.Location) error {
 	return l.location.CreateLocation(location)
 }
 
-func (l *locationService) GetLocationByID(id string) (*domain.Location, error) {
+func (l *locationService) GetLocationByID(id int64) (*domain.Location, error) {
 	return l.location.GetLocationByID(id)
 }
 
@@ -29,6 +29,6 @@ func (l *locationService) UpdateLocation(location *domain.Location) error {
 	return l.location.UpdateLocation(location)
 }
 
-func (l *locationService) DeleteLocation(id string) error {
+func (l *locationService) DeleteLocation(id int64) error {
 	return l.location.DeleteLocation(id)
 }

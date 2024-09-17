@@ -26,6 +26,10 @@ func (u *userRepository) GetUserByID(id int64) (*domain.User, error) {
 	if err != nil {
 		return nil, err
 	}
+	erro := u.Db.Preload("Locations").First(&user, id).Error
+	if erro != nil {
+		return nil, erro
+	}
 	return &user, nil
 }
 

@@ -58,12 +58,6 @@ postgresql:
     component: database
     manager: helm
 
-  pv:
-    name: data-postgresql-0
-    path: /mnt/data/postgresql-0
-    node: force-gl65-9sek
-
-
 ingress:
   className: nginx
   annotations: 

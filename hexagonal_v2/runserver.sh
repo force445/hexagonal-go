@@ -5,8 +5,6 @@ while ! nc -z ${POSTGRES_HOST} ${POSTGRES_PORT}; do
     sleep 1;
 done;
 
-echo "Hello, world"
-
 # Run the Go FOR DEVELOPMENT ONLY
 # cd cmd/http/
 # dogo -c dogo.json

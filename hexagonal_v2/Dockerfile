@@ -43,7 +43,7 @@ RUN go mod tidy
 # Copy the rest of the application code
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /app/bin/main cmd/http/main.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /app/bin/main cmd/http/main.go
 
 FROM ubuntu:20.04
 
